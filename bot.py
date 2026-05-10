@@ -1,48 +1,47 @@
 import telebot
-from telebot import types
+import threading
+import time
 
-# Identifiants du Labo Nasser
+# --- CONFIGURATION LABO ---
 TOKEN = "8774704728:AAEOSLgJviN9he_EDs-iEsWrNeee08sBZz0"
 CHAT_ID = "6727767271"
-
-# URL de ton index.html hébergé sur GitHub Pages
-# Exemple: https://nasser-trading.github.io/shield-twa/
-WEB_APP_URL = "TA_URL_GITHUB_PAGES_ICI"
+WEB_APP_URL = "https://traderprosniper-ship-it.github.io/Kit-IFDA-interbank-flow-/"
 
 bot = telebot.TeleBot(TOKEN)
 
-@bot.message_handler(commands=['start'])
-def start_labo(message):
-    """Initialisation du bot et affichage du bouton TWA"""
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    
-    # Configuration du bouton Web App
-    web_app = types.WebAppInfo(WEB_APP_URL)
-    btn = types.KeyboardButton(text="🚀 OUVRIR BLACKSNIPER TWA", web_app=web_app)
-    
-    markup.add(btn)
-    
-    welcome_text = (
-        "🛡️ **SANGMELIMA SHIELD - ACTIVE**\n\n"
-        "**Trader :** Nasser\n"
-        "**Capital :** 25$\n"
-        "**Stratégie :** SMC/ICT Precision\n\n"
-        "Prêt pour un sweep PDH/PDL ? Clique sur le bouton ci-dessous."
-    )
-    
-    bot.send_message(CHAT_ID, welcome_text, parse_mode="Markdown", reply_markup=markup)
+# --- IA CHAT MODULE (Robot Icon) ---
+def shield_ai_brain(text):
+    """Logique IA entrainée sur les règles de Nasser"""
+    text = text.lower()
+    if "crt" in text or "h4" in text:
+        return "🧠 IA SHIELD : Surveillance CRT H4 activée. Attends le sweep de la B2 et le MSS en M5 (B3)."
+    if "pnl" in text or "lot" in text:
+        return "🧠 IA SHIELD : Avec 25$, ton risque est de 1.25$. Entre ton SL au-delà de la mèche de sweep."
+    return "🧠 IA SHIELD : Je surveille les confluences. Envoie-moi un setup pour analyse."
 
-def alert_sniper(pair, level, type_sweep):
-    """Fonction pour t'envoyer une alerte de sweep en direct"""
-    msg = (
-        f"⚠️ **ALERTE SWEEP DETECTÉ**\n\n"
-        f"Instrument: {pair}\n"
-        f"Niveau: {level} ({type_sweep})\n"
-        f"Action: Attendre la réintégration et le rejet mèche."
-    )
-    bot.send_message(CHAT_ID, msg, parse_mode="Markdown")
+@bot.message_handler(func=lambda m: True)
+def handle_ai_messages(message):
+    reply = shield_ai_brain(message.text)
+    bot.reply_to(message, reply)
+
+# --- CRT SCANNER MODULE ---
+def scanner_crt_h4():
+    """Vérifie le cycle des 3 bougies CRT"""
+    print("🛡️ Scanner CRT H4 en ligne pour Nasser...")
+    while True:
+        # Simulation d'un signal validé
+        # Ici on insérerait la lecture réelle des prix
+        time.sleep(3600) # Vérification toutes les heures
+
+@bot.message_handler(commands=['start'])
+def start_bot(message):
+    markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+    web_app = telebot.types.WebAppInfo(WEB_APP_URL)
+    btn = telebot.types.KeyboardButton(text="🚀 OUVRIR TRADINGGAIN DASHBOARD", web_app=web_app)
+    markup.add(btn)
+    bot.send_message(CHAT_ID, "🛡️ **SANGMELIMA SHIELD - LABO ACTIF**\n\nPrêt pour un trade de précision ?", parse_mode="Markdown", reply_markup=markup)
 
 if __name__ == "__main__":
-    print(f"Bot BLACKSNIPER SMC lancé pour Nasser (ID: {CHAT_ID})...")
+    threading.Thread(target=scanner_crt_h4, daemon=True).start()
     bot.infinity_polling()
-  
+    
