@@ -3,144 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLACKSNIPER SMC - Shield Lab</title>
+    <title>BLACKSNIPER SMC - TradingGain Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #0B0E11; color: white; font-family: 'Inter', sans-serif; }
+        body { background-color: #0B0E11; color: white; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         .glass-card { background: #161A1E; border: 1px solid #2B3139; border-radius: 1.5rem; }
-        .sniper-green { color: #00FF94; }
-        .sniper-bg { background-color: #00FF94; }
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .icon-container { width: 56px; height: 56px; border-radius: 18px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .badge-new { position: absolute; -top-1; -right-1; background: #EAB308; color: black; font-size: 7px; font-weight: 900; padding: 1px 4px; border-radius: 4px; border: 1px solid #0B0E11; }
+        .market-card { min-width: 135px; background: #1A1F26; border-radius: 1.25rem; padding: 1rem; border: 1px solid #2B3139; }
+        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="p-4 pb-10">
 
-    <!-- HEADER PROFILE -->
     <div class="flex justify-between items-center mb-6">
         <div class="flex items-center gap-3">
-            <div class="p-3 bg-gray-800 rounded-2xl border border-gray-700">
-                <i class="fas fa-crosshairs sniper-green text-2xl"></i>
+            <div class="bg-emerald-500/10 p-2.5 rounded-xl border border-emerald-500/20">
+                <i class="fas fa-bolt text-emerald-400 text-xl"></i>
             </div>
             <div>
-                <h1 class="text-xl font-bold tracking-tight">BLACKSNIPER SMC</h1>
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest">Sangmélima Shield Lab</p>
+                <h1 class="text-xl font-black tracking-tight">TradingGain</h1>
+                <p class="text-[10px] text-gray-500 font-medium">by BLACKSNIPER SMC</p>
             </div>
         </div>
         <div class="flex items-center gap-2">
-            <div class="bg-[#1E2329] p-2 rounded-full border border-gray-800 text-gray-400">
-                <i class="fas fa-bullhorn text-xs"></i>
-            </div>
-            <div class="bg-gray-800 px-3 py-1 rounded-full border border-yellow-600 text-yellow-500 text-[10px] font-bold">PRO</div>
+            <i class="fas fa-bullhorn text-gray-500 text-sm p-2 bg-gray-800/50 rounded-full"></i>
+            <div class="bg-gradient-to-r from-yellow-600 to-yellow-400 px-3 py-1 rounded-full text-black text-[10px] font-black italic shadow-lg shadow-yellow-600/20">⭐ PRO</div>
         </div>
     </div>
 
-    <!-- STATS PANEL (Performance du Labo) -->
-    <div class="glass-card p-5 mb-5 flex justify-between text-center shadow-lg">
-        <div><p class="sniper-green text-xl font-bold">70%</p><p class="text-[9px] text-gray-500 uppercase">Win Rate</p></div>
-        <div><p class="text-white font-bold text-xl">108</p><p class="text-[9px] text-gray-500 uppercase">Signals</p></div>
-        <div><p class="text-red-500 font-bold text-xl">32</p><p class="text-[9px] text-gray-500 uppercase">SL Hit</p></div>
-        <div><p class="sniper-green text-xl font-bold">+270.6%</p><p class="text-[9px] text-gray-500 uppercase">P&L</p></div>
-    </div>
-
-    <!-- SCANNER DE LIQUIDITÉ (Règles PDH/PDL) -->
-    <div class="glass-card p-4 mb-6 border-l-4 border-[#00FF94]">
-        <div class="flex justify-between items-center mb-3">
-            <h2 class="text-xs font-bold uppercase tracking-tighter">Scanner de Liquidité (Daily)</h2>
-            <span class="flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full sniper-bg opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 sniper-bg"></span>
-            </span>
+    <div class="glass-card p-5 mb-5 flex justify-between text-center divide-x divide-gray-800">
+        <div class="w-1/4">
+            <p class="text-emerald-400 font-bold text-lg">70%</p>
+            <p class="text-[8px] text-gray-500 uppercase tracking-tighter font-bold">Win Rate</p>
         </div>
-        <div class="grid grid-cols-2 gap-4 text-[11px]">
-            <div class="bg-[#0B0E11] p-2 rounded-lg border border-gray-800">
-                <p class="text-gray-500">PDH (High d'hier)</p>
-                <p id="pdh-value" class="font-mono text-white">$ --</p>
-            </div>
-            <div class="bg-[#0B0E11] p-2 rounded-lg border border-gray-800">
-                <p class="text-gray-500">PDL (Low d'hier)</p>
-                <p id="pdl-value" class="font-mono text-white">$ --</p>
-            </div>
+        <div class="w-1/4">
+            <p class="text-white font-bold text-lg">108</p>
+            <p class="text-[8px] text-gray-500 uppercase tracking-tighter font-bold">Signals</p>
         </div>
-        <div id="status-box" class="mt-3 p-2 bg-[#0B0E11] rounded border border-gray-800 text-center">
-            <p class="text-[10px] text-gray-400 italic">En attente de sweep...</p>
+        <div class="w-1/4">
+            <p class="text-red-500 font-bold text-lg">32</p>
+            <p class="text-[8px] text-gray-500 uppercase tracking-tighter font-bold">SL Hit</p>
+        </div>
+        <div class="w-1/4">
+            <p class="text-emerald-400 font-bold text-lg">+270.6%</p>
+            <p class="text-[8px] text-gray-500 uppercase tracking-tighter font-bold">P&L</p>
         </div>
     </div>
 
-    <!-- CALCULATEUR SNIPER (Gestion 25$) -->
-    <div class="glass-card p-5 mb-6">
-        <h2 class="text-xs font-bold uppercase mb-4 sniper-green"><i class="fas fa-calculator mr-2"></i>PnL Calc (Capital: 25$)</h2>
-        <div class="space-y-3">
-            <input id="entry-price" type="number" placeholder="Prix d'entrée (Réintégration)" class="w-full bg-[#0B0E11] border border-gray-700 p-3 rounded-xl text-sm focus:border-teal-500 outline-none">
-            <input id="stop-loss" type="number" placeholder="Stop Loss (Au-delà de la mèche)" class="w-full bg-[#0B0E11] border border-gray-700 p-3 rounded-xl text-sm focus:border-teal-500 outline-none">
-            <button onclick="calculateSniperLot()" class="w-full sniper-bg text-black font-black py-3 rounded-xl uppercase text-xs tracking-widest hover:opacity-90 transition">Calculer Lot Précision</button>
-        </div>
-        <div id="calc-result" class="hidden mt-4 pt-4 border-t border-gray-800 flex justify-between items-center">
+    <div class="glass-card p-4 mb-6 flex justify-between items-center border-l-4 border-yellow-500">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-orange-500/20 rounded-xl flex items-center justify-center text-orange-400"><i class="fas fa-sun text-sm"></i></div>
             <div>
-                <p class="text-[10px] text-gray-500 uppercase">Lot recommandé</p>
-                <p id="lot-output" class="text-lg font-bold text-white">0.00</p>
+                <p class="text-xs font-bold text-white">Today's Daily Brief</p>
+                <p class="text-[10px] text-gray-500">Saturday, May 10 • Tap to read</p>
             </div>
-            <div class="text-right">
-                <p class="text-[10px] text-gray-500 uppercase">Risque (5%)</p>
-                <p class="text-lg font-bold text-red-500">1.25$</p>
+        </div>
+        <i class="fas fa-arrow-right text-yellow-500 text-sm"></i>
+    </div>
+
+    <div class="flex justify-between items-center mb-4 px-1">
+        <h2 class="text-xs font-black uppercase text-gray-400 tracking-widest"><i class="fas fa-chart-bar mr-2"></i>Live Market</h2>
+        <span class="text-[10px] text-blue-400 font-bold cursor-pointer">See All <i class="fas fa-chevron-right ml-1"></i></span>
+    </div>
+    <div class="flex gap-3 overflow-x-auto pb-4 mb-6 scrollbar-hide">
+        <div class="market-card">
+            <p class="text-[9px] text-gray-500 font-bold">BTC</p>
+            <p class="font-bold text-sm text-white">$80,224.2</p>
+            <p class="text-[10px] text-emerald-400 font-bold">+0.97%</p>
+        </div>
+        <div class="market-card border-emerald-500/50">
+            <p class="text-[9px] text-gray-500 font-bold">XAUUSD</p>
+            <p class="font-bold text-sm text-white">$2,345.10</p>
+            <p class="text-[10px] text-emerald-400 font-bold">CRT ACTIVE</p>
+        </div>
+        <div class="market-card">
+            <p class="text-[9px] text-gray-500 font-bold">ETH</p>
+            <p class="font-bold text-sm text-white">$2,315.57</p>
+            <p class="text-[10px] text-emerald-400 font-bold">+1.89%</p>
+        </div>
+    </div>
+
+    <div class="glass-card p-6">
+        <h2 class="text-center text-[10px] font-black uppercase text-gray-500 mb-6 tracking-widest">Shield Features Grid</h2>
+        <div class="grid grid-cols-4 gap-y-8 gap-x-2 text-center">
+            <div class="flex flex-col items-center">
+                <div class="icon-container bg-emerald-950/40 text-emerald-400"><span class="badge-new">NEW</span><i class="fas fa-robot text-xl"></i></div>
+                <span class="text-[9px] text-gray-400 mt-1">AI Chat</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="icon-container bg-blue-900/20 text-blue-400"><i class="fas fa-chart-line text-xl"></i></div>
+                <span class="text-[9px] text-gray-400 mt-1 text-center">Analysis</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="icon-container bg-red-900/20 text-red-400"><i class="fas fa-bullseye text-xl"></i></div>
+                <span class="text-[9px] text-gray-400 mt-1">Opports.</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="icon-container bg-purple-900/20 text-purple-400"><i class="fas fa-balance-scale text-xl"></i></div>
+                <span class="text-[9px] text-gray-400 mt-1 leading-tight text-center">L/S Ratio</span>
+            </div>
+            <div class="flex flex-col items-center" onclick="alert('Risque Nasser: 1.25$ / Trade')">
+                <div class="icon-container bg-yellow-900/20 text-yellow-400"><span class="badge-new">NEW</span><i class="fas fa-calculator text-xl"></i></div>
+                <span class="text-[9px] text-gray-400 mt-1">PnL Calc</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="icon-container bg-orange-900/20 text-orange-400"><span class="badge-new">NEW</span><i class="fas fa-calendar-day text-xl"></i></div>
+                <span class="text-[9px] text-gray-400 mt-1">Calendar</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="icon-container bg-teal-900/20 text-teal-400"><span class="badge-new">NEW</span><i class="fas fa-coins text-xl"></i></div>
+                <span class="text-[9px] text-gray-400 mt-1">Gold/Forex</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="icon-container bg-indigo-900/20 text-indigo-400"><span class="badge-new">NEW</span><i class="fas fa-magnifying-glass text-xl"></i></div>
+                <span class="text-[9px] text-gray-400 mt-1">MTF Scan</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="icon-container bg-gray-800 text-gray-500"><i class="fas fa-graduation-cap text-xl"></i></div>
+                <span class="text-[9px] text-gray-400 mt-1 text-center">Academy</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="icon-container bg-sky-900/20 text-sky-400"><span class="badge-new">NEW</span><i class="fas fa-newspaper text-xl"></i></div>
+                <span class="text-[9px] text-gray-400 mt-1">News</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="icon-container bg-rose-900/20 text-rose-400"><i class="fas fa-gift text-xl"></i></div>
+                <span class="text-[9px] text-gray-400 mt-1">TG Points</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="icon-container bg-cyan-900/20 text-cyan-400"><span class="badge-new">NEW</span><i class="fas fa-brain text-xl"></i></div>
+                <span class="text-[9px] text-gray-400 mt-1">AI Trends</span>
             </div>
         </div>
     </div>
 
-    <!-- GRID DES FONCTIONNALITÉS -->
-    <div class="grid grid-cols-4 gap-4 text-center">
-        <div class="flex flex-col items-center">
-            <div class="w-14 h-14 flex items-center justify-center bg-teal-900/20 rounded-2xl border border-gray-800 mb-1 relative">
-                <span class="absolute -top-1 -right-1 bg-yellow-500 text-black text-[7px] font-bold px-1 rounded-full">NEW</span>
-                <i class="fas fa-robot text-teal-400 text-xl"></i>
-            </div>
-            <span class="text-[9px] text-gray-400">AI Chat</span>
-        </div>
-        <div class="flex flex-col items-center">
-            <div class="w-14 h-14 flex items-center justify-center bg-blue-900/20 rounded-2xl border border-gray-800 mb-1">
-                <i class="fas fa-chart-pie text-blue-400 text-xl"></i>
-            </div>
-            <span class="text-[9px] text-gray-400">Analysis</span>
-        </div>
-        <div class="flex flex-col items-center">
-            <div class="w-14 h-14 flex items-center justify-center bg-orange-900/20 rounded-2xl border border-gray-800 mb-1">
-                <i class="fas fa-bolt text-orange-400 text-xl"></i>
-            </div>
-            <span class="text-[9px] text-gray-400">Opportunities</span>
-        </div>
-        <div class="flex flex-col items-center">
-            <div class="w-14 h-14 flex items-center justify-center bg-purple-900/20 rounded-2xl border border-gray-800 mb-1">
-                <i class="fas fa-layer-group text-purple-400 text-xl"></i>
-            </div>
-            <span class="text-[9px] text-gray-400">MTF Scan</span>
-        </div>
-    </div>
-
-    <!-- SCRIPTS -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
-
-        // LOGIQUE CALCULATEUR
-        function calculateSniperLot() {
-            const capital = 25;
-            const risk = 1.25; // 5% de risque
-            const entry = parseFloat(document.getElementById('entry-price').value);
-            const sl = parseFloat(document.getElementById('stop-loss').value);
-
-            if (entry && sl && entry !== sl) {
-                const distance = Math.abs(entry - sl);
-                const lotSize = (risk / distance).toFixed(2);
-                
-                document.getElementById('lot-output').innerText = lotSize;
-                document.getElementById('calc-result').classList.remove('hidden');
-                
-                // Feedback Haptique Telegram
-                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-            }
-        }
+        tg.ready(); tg.expand();
+        tg.headerColor = '#0B0E11';
     </script>
 </body>
-</html>
+        </html>
+                    
